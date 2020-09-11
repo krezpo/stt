@@ -1,8 +1,7 @@
-#import translate, os, sentiment, synthesize
 import speech_recognition as sr
 import os
 import requests
-from flask import Flask, jsonify, request#, render_template, url_for, send_from_directory
+from flask import Flask, jsonify, request
 from flask_api import status
 from pydub import AudioSegment
 
@@ -22,24 +21,7 @@ def is_downloadable(url):
 
 @app.route('/')
 def index():
-	return jsonify({"message":"Hello Json!"})
-
-@app.route('/get-file', methods=['POST'])
-def get_file():
-    data = request.get_json()
-    uri  = data['uri']
-    r = requests.get(uri, allow_redirects=True)
-    #print(r.headers.get('content-type'))
-
-    if r.headers.get('content-type') == "audio/ogg":
-
-        source = "{}{}".format(uri.split("/")[-1], ".ogg")
-        open(source, 'wb').write(r.content)
-
-    #print(uri)
-
-    return data
-
+	return jsonify({"message":"Hello World!"})
 
 @app.route('/speech-to-text', methods=['POST'])
 def text_to_speech():
