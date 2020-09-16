@@ -68,4 +68,4 @@ def text_to_speech():
         return jsonify({"error": e}), status.HTTP_500_INTERNAL_SERVER_ERROR
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port="80")
+    app.run(host="0.0.0.0", port="5000")
