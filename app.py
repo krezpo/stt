@@ -10,14 +10,19 @@ app.config['JSON_AS_ASCII'] = False
 
 def is_downloadable(url):
 
+    
     h = requests.head(url, allow_redirects=True)
     header = h.headers
     content_type = header.get('content-type')
+
+    if content_type == None:
+        return False
 
     if content_type.lower() in ['text', 'html']:
         return False
 
     return True
+    
 
 @app.route('/')
 def index():
