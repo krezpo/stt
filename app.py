@@ -33,13 +33,16 @@ def text_to_speech():
     uri      = data['uri']
     language = data['language']
 
-    if not is_downloadable(uri):
-        return "", status.HTTP_400_BAD_REQUEST
-            
+    try:
+        if not is_downloadable(uri):
+            return "", status.HTTP_400_BAD_REQUEST
+    except Exception as e:
+        return jsonify({"error": e}), status.HTTP_503_SERVICE_UNAVAILABLE
+
     try:
         r = requests.get(uri, allow_redirects=True)
     except Exception as e:
-        return jsonify({"error": e}), status.HTTP_500_INTERNAL_SERVER_ERROR
+        return jsonify({"error": e}), status.HTTP_503_SERVICE_UNAVAILABLE
 
     if r.headers.get('content-type') != "audio/ogg":
         return "", status.HTTP_415_UNSUPPORTED_MEDIA_TYPE
@@ -62,7 +65,7 @@ def text_to_speech():
         
         os.remove(destination_file)
 
-        return data
+        return data, status.HTTP_200_OK
     
     except Exception as e:
         return jsonify({"error": e}), status.HTTP_500_INTERNAL_SERVER_ERROR
